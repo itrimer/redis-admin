@@ -218,4 +218,15 @@ public class RedisController extends RedisApplication implements Constant{
 		
 		return WorkcenterResponseBodyJson.custom().build();
 	}
+	@RequestMapping(value="/TTL/{serverName}/{dbIndex}/{key}", method=RequestMethod.GET)
+	@ResponseBody
+	public Object getTTL(HttpServletRequest request, HttpServletResponse response,
+						@PathVariable String serverName, @PathVariable int dbIndex,
+						@PathVariable String key) {
+
+		WorkcenterResult result = redisService.getTTL(serverName, dbIndex, key);
+
+		return WorkcenterResponseBodyJson.custom().setAll(result, EXPIRE).build();
+	}
+
 }

@@ -126,10 +126,23 @@ public class RedisServiceImpl extends RedisApplication implements RedisService, 
 		}
 		return values;
 	}
+
 	@Override
 	public void delKV(String serverName, int dbIndex, String deleteKeys) {
 		redisDao.delRedisKeys(serverName, dbIndex, deleteKeys);
 		return;
 	}
-	
+
+
+	@Override
+	public WorkcenterResult getTTL(String serverName, int dbIndex, String key) {
+		long expire = redisDao.getExpire(serverName, dbIndex, key);
+
+		return WorkcenterResult.custom().setOK(WorkcenterCodeEnum.valueOf(OK_REDISKV_UPDATE), new Object() {
+			public long expire;
+			{
+				this.expire = expire;
+			}
+		}).build();
+	}
 }

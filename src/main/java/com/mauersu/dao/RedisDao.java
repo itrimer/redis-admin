@@ -231,4 +231,10 @@ public class RedisDao extends RedisApplication {
 		redisTemplate.opsForValue().set(key, value);
 		return;
 	}
+
+	public long getExpire(String serverName, int dbIndex, String key) {
+		RedisTemplate<String, Object> redisTemplate = redisTemplateFactory.getRedisTemplate(serverName);
+		redisConnectionDbIndex.set(dbIndex);
+		return redisTemplate.getExpire(key);
+	}
 }

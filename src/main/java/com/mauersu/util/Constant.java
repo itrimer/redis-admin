@@ -45,4 +45,7 @@ public interface Constant {
 	
 	/** operator for log **/
 	public static final String GETKV 														= "GETKV";
+
+	/** operator for log **/
+	public static final String EXPIRE 														= "EXPIRE";
 }
