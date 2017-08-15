@@ -136,12 +136,12 @@ public class RedisServiceImpl extends RedisApplication implements RedisService, 
 
 	@Override
 	public WorkcenterResult getTTL(String serverName, int dbIndex, String key) {
-		long expire = redisDao.getExpire(serverName, dbIndex, key);
+		long expire1 = redisDao.getExpire(serverName, dbIndex, key);
 
-		return WorkcenterResult.custom().setOK(WorkcenterCodeEnum.valueOf(OK_REDISKV_UPDATE), new Object() {
+		return WorkcenterResult.custom().setOK(WorkcenterCodeEnum.valueOf(OK_SUCCESS), new Object(){
 			public long expire;
 			{
-				this.expire = expire;
+				expire = expire1;
 			}
 		}).build();
 	}
