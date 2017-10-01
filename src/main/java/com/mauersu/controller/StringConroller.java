@@ -19,36 +19,36 @@ import com.mauersu.util.RedisApplication;
 
 @Controller
 @RequestMapping("/string")
-public class StringConroller extends RedisApplication implements Constant {
-	
-	@Autowired
-	private StringService stringService;
-	
-	@RequestMapping(value="/delValue", method=RequestMethod.POST)
-	@ResponseBody
-	public Object delValue(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam String serverName, 
-			@RequestParam int dbIndex,
-			@RequestParam String key,
-			@RequestParam String dataType) {
-		
-		stringService.delValue(serverName, dbIndex, key);
-		
-		return WorkcenterResponseBodyJson.custom().build();
-	}
-	
-	@RequestMapping(value="/updateValue", method=RequestMethod.POST)
-	@ResponseBody
-	public Object updateValue(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam String serverName, 
-			@RequestParam int dbIndex,
-			@RequestParam String key,
-			@RequestParam String dataType,
-			@RequestParam String value) {
-		
-		stringService.updateValue(serverName, dbIndex, key, value);
-		
-		return WorkcenterResponseBodyJson.custom().build();
-	}
-	
+public class StringConroller {
+
+    @Autowired
+    private StringService stringService;
+
+    @RequestMapping(value = "/delValue", method = RequestMethod.POST)
+    @ResponseBody
+    public Object delValue(HttpServletRequest request, HttpServletResponse response,
+                           @RequestParam String serverName,
+                           @RequestParam int dbIndex,
+                           @RequestParam String key,
+                           @RequestParam String dataType) {
+
+        stringService.delValue(serverName, dbIndex, key);
+
+        return WorkcenterResponseBodyJson.custom().build();
+    }
+
+    @RequestMapping(value = "/updateValue", method = RequestMethod.POST)
+    @ResponseBody
+    public Object updateValue(HttpServletRequest request, HttpServletResponse response,
+                              @RequestParam String serverName,
+                              @RequestParam int dbIndex,
+                              @RequestParam String key,
+                              @RequestParam String dataType,
+                              @RequestParam String value) {
+
+        stringService.updateValue(serverName, dbIndex, key, value);
+
+        return WorkcenterResponseBodyJson.custom().build();
+    }
+
 }

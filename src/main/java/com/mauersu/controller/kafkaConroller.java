@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/kafka")
-public class kafkaConroller extends RedisApplication implements Constant {
+public class kafkaConroller extends RedisApplication {
 
 }

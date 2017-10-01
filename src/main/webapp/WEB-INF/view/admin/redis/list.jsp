@@ -61,7 +61,6 @@
 					<c:if test="${showType == 'show' }">
 						<th>type</th>
 					</c:if>
-					<th>失效时间</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -73,7 +72,6 @@
 						<c:if test="${showType == 'show' }">
 							<td>${key.type }</td>
 						</c:if>
-						<td><a href="javascript:void(0)" class="ttl_btn">失效时间</a></td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -135,7 +133,8 @@
 		$(".back_btn").on("click", function() {
 			//window.location.href = basePath + '/redis/stringList/' + serverName + '/' + dbIndex;
 		});
-
+		
+		
 		$(".delete_btn").on("click", function() {
 			var operator = $(this).attr("value1");
 			var url = "<%=basePath%>/redis/delKV";
@@ -186,21 +185,6 @@
 				}
 			})
 		})
-        $(".ttl_btn").on("click", function() {
-            var newState = $(this).parents("tr").find(":input[name='redisKey']").attr("value1");
-            var url = basePath + '/redis/TTL/' + serverName + '/' + dbIndex + '/'+newState;
-            $.ajax({
-                type: "get",
-                url: url,
-                dataType: "json",
-                data: {
-                    state: newState,
-                },
-                success: function(data) {
-                    showData(data);
-                }
-            })
-        })
 	});
 </script>
 

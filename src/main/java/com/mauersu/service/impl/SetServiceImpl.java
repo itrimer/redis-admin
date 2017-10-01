@@ -1,6 +1,8 @@
 package com.mauersu.service.impl;
 
+import com.mauersu.dao.RedisTemplateFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.mauersu.dao.RedisDao;
@@ -14,12 +16,16 @@ public class SetServiceImpl implements SetService {
 	
 	@Override
 	public void delSetValue(String serverName, int dbIndex, String key, String value) {
+		RedisTemplate redisTemplate = RedisTemplateFactory.getRedisTemplate(serverName);
+		redisDao.setRedisTemplate(redisTemplate);
 		redisDao.delSetValue(serverName, dbIndex, key, value);
 	}
 
 	@Override
 	public void updateSetValue(String serverName, int dbIndex, String key, String value) {
-		redisDao.updateSetValue(serverName, dbIndex, key, value);		
+		RedisTemplate redisTemplate = RedisTemplateFactory.getRedisTemplate(serverName);
+		redisDao.setRedisTemplate(redisTemplate);
+		redisDao.updateSetValue(serverName, dbIndex, key, value);
 	}
 	
 	

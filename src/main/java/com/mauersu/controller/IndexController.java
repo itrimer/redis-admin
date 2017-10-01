@@ -8,12 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.mauersu.util.Constant;
-@Controller
-public class IndexController implements Constant{
 
-	@RequestMapping(value={"/index","/"}, method=RequestMethod.GET)
-	public Object index(HttpServletRequest request, HttpServletResponse response) {
-		return "redirect:/redis";
-	}
-	
+@Controller
+public class IndexController {
+
+    @RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
+    public Object index(HttpServletRequest request, HttpServletResponse response) {
+        return "redirect:/redis";
+    }
+
 }

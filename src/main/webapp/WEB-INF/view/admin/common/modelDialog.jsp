@@ -39,27 +39,6 @@
 			$('#myModal').modal();
 		}
 	}
-
-    function showData(data) {
-        if (data.returncode == "200") {
-            $("#model_title").text(data.returnmsg);
-            var text= data.returnmemo;
-            if(data.data) {
-                text += "{ ";
-                for(var item in data.data){
-                    text += "'"+item+"':'"+data.data[item]+"',";
-                }
-                text += " }";
-			}
-
-            $("#model_content").text(text);
-            $('#myModal').modal();
-        } else {
-            $("#model_title").text(data.returnmsg);
-            $("#model_content").text(data.returnmemo);
-            $('#myModal').modal();
-        }
-    }
 	
 	</script>
 </div>
