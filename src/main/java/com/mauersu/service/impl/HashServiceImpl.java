@@ -16,15 +16,11 @@ public class HashServiceImpl implements HashService {
 	
 	@Override
 	public void delHashField(String serverName, int dbIndex, String key, String field) {
-		RedisTemplate redisTemplate = RedisTemplateFactory.getRedisTemplate(serverName);
-		redisDao.setRedisTemplate(redisTemplate);
 		redisDao.delRedisHashField(serverName, dbIndex, key, field);
 	}
 
 	@Override
 	public void updateHashField(String serverName, int dbIndex, String key, String field, String value) {
-		RedisTemplate redisTemplate = RedisTemplateFactory.getRedisTemplate(serverName);
-		redisDao.setRedisTemplate(redisTemplate);
 		redisDao.updateHashField(serverName, dbIndex, key, field, value);
 	}
 	

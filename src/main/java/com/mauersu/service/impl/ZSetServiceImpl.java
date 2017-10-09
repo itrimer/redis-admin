@@ -16,15 +16,11 @@ public class ZSetServiceImpl implements ZSetService {
 	
 	@Override
 	public void updateZSetValue(String serverName, int dbIndex, String key, double score, String member) {
-		RedisTemplate redisTemplate = RedisTemplateFactory.getRedisTemplate(serverName);
-		redisDao.setRedisTemplate(redisTemplate);
 		redisDao.updateZSetValue(serverName, dbIndex, key, score, member);
 	}
 
 	@Override
 	public void delZSetValue(String serverName, int dbIndex, String key, String member) {
-		RedisTemplate redisTemplate = RedisTemplateFactory.getRedisTemplate(serverName);
-		redisDao.setRedisTemplate(redisTemplate);
 		redisDao.delZSetValue(serverName, dbIndex, key, member);
 	}
 

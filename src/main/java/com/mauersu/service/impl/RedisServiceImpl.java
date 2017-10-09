@@ -18,136 +18,128 @@ import cn.workcenter.common.WorkcenterResult;
 import cn.workcenter.common.constant.WebConstant;
 
 @Service
-public class RedisServiceImpl implements RedisService  {
-	
-	@Autowired
-	private RedisDao redisDao;
-	
-	@Override
-	public void addRedisServer(String name, String host, int port, String password) {
-		RedisApplication.createRedisConnection(name, host, password);
-	}
-	
-	@Override
-	public void addKV(String serverName, int dbIndex, String dataType,
-			String key, 
-			String[] values, double[] scores, String[] members, String[] fields) {
-		RedisTemplate<String, Object> redisTemplate = RedisTemplateFactory.getRedisTemplate(serverName);
-		redisDao.setRedisTemplate(redisTemplate);
+public class RedisServiceImpl implements RedisService {
 
-		switch(dataType) {
-		case "STRING":
-			redisDao.addSTRING(serverName, dbIndex, key, values[0]);
-			break;
-		case "LIST":
-			redisDao.addLIST(serverName, dbIndex, key, values);
-			break;
-		case "SET":
-			redisDao.addSET(serverName, dbIndex, key, values);
-			break;
-		case "ZSET":
-			redisDao.addZSET(serverName, dbIndex, key, scores, members);
-			break;
-		case "HASH":
-			redisDao.addHASH(serverName, dbIndex, key, fields, values);
-			break;
-		}
-	}
-	@Override
-	public WorkcenterResult getKV(String serverName, int dbIndex, String dataType, String key) {
-		RedisTemplate<String, Object> redisTemplate = RedisTemplateFactory.getRedisTemplate(serverName);
-		redisDao.setRedisTemplate(redisTemplate);
+    @Autowired
+    private RedisDao redisDao;
 
-		Object values = null;
-		switch(dataType) {
-		case "STRING":
-			values = redisDao.getSTRING(serverName, dbIndex, key);
-			break;
-		case "LIST":
-			values = redisDao.getLIST(serverName, dbIndex, key);
-			break;
-		case "SET":
-			values = redisDao.getSET(serverName, dbIndex, key);
-			break;
-		case "ZSET":
-			values = redisDao.getZSET(serverName, dbIndex, key);
-			break;
-		case "HASH":
-			values = redisDao.getHASH(serverName, dbIndex, key);
-			break;
-		case "NONE":
-			//if showType = ShowTypeEnum.hide
-			dataType = getDataType(serverName, dbIndex, key);
-			values = getKV(serverName, dbIndex, key);
-			break;
-		}
-		
-		final String dataType1 = dataType;
-		final Object values1 = values;
-		return WorkcenterResult.custom().setOK(WorkcenterCodeEnum.valueOf(WebConstant.OK_REDISKV_UPDATE), new Object() {
-				public String dataType;
-				public Object values;
-				{
-					dataType = dataType1;
-					values = values1;
-				}
-			}).build();
-	}
+    @Override
+    public void addRedisServer(String name, String host, int port, String password) {
+        RedisApplication.createRedisConnection(name, host, password);
+    }
 
-	private String getDataType(String serverName, int dbIndex, String key) {
-		RedisConnection connection = null;
-		try {
-			RedisTemplate redisTemplate = RedisTemplateFactory.getRedisTemplate(serverName);
-			connection = RedisConnectionUtils.getConnection(redisTemplate.getConnectionFactory());
-			connection.select(dbIndex);
-			DataType dataType = connection.type(key.getBytes());
-			return dataType.name().toUpperCase();
-		}finally {
-			connection.close();
-		}
-	}
-	
-	private Object getKV(String serverName, int dbIndex, String key) {
-		RedisTemplate<String, Object> redisTemplate = RedisTemplateFactory.getRedisTemplate(serverName);
-		redisDao.setRedisTemplate(redisTemplate);
+    @Override
+    public void addKV(String serverName, int dbIndex, String dataType,
+                      String key, String[] values, double[] scores, String[] members, String[] fields) {
+        switch (dataType) {
+            case "STRING":
+                redisDao.addSTRING(serverName, dbIndex, key, values[0]);
+                break;
+            case "LIST":
+                redisDao.addLIST(serverName, dbIndex, key, values);
+                break;
+            case "SET":
+                redisDao.addSET(serverName, dbIndex, key, values);
+                break;
+            case "ZSET":
+                redisDao.addZSET(serverName, dbIndex, key, scores, members);
+                break;
+            case "HASH":
+                redisDao.addHASH(serverName, dbIndex, key, fields, values);
+                break;
+        }
+    }
 
-		RedisConnection connection = null;
-		try {
-			connection = RedisConnectionUtils.getConnection(redisTemplate.getConnectionFactory());
-			connection.select(dbIndex);
-			DataType dataType = connection.type(key.getBytes());
-			Object values = null;
-			switch (dataType) {
-				case STRING:
-					values = redisDao.getSTRING(serverName, dbIndex, key);
-					break;
-				case LIST:
-					values = redisDao.getLIST(serverName, dbIndex, key);
-					break;
-				case SET:
-					values = redisDao.getSET(serverName, dbIndex, key);
-					break;
-				case ZSET:
-					values = redisDao.getZSET(serverName, dbIndex, key);
-					break;
-				case HASH:
-					values = redisDao.getHASH(serverName, dbIndex, key);
-					break;
-				case NONE:
-					//never be here
-					values = null;
-			}
-			return values;
-		}finally {
-			connection.close();
-		}
-	}
-	@Override
-	public void delKV(String serverName, int dbIndex, String deleteKeys) {
-		RedisTemplate<String, Object> redisTemplate = RedisTemplateFactory.getRedisTemplate(serverName);
-		redisDao.setRedisTemplate(redisTemplate);
-		redisDao.delRedisKeys(serverName, dbIndex, deleteKeys);
-		return;
-	}
-	
+    @Override
+    public WorkcenterResult getKV(String serverName, int dbIndex, String dataType, String key) {
+        Object values = null;
+        switch (dataType) {
+            case "STRING":
+                values = redisDao.getSTRING(serverName, dbIndex, key);
+                break;
+            case "LIST":
+                values = redisDao.getLIST(serverName, dbIndex, key);
+                break;
+            case "SET":
+                values = redisDao.getSET(serverName, dbIndex, key);
+                break;
+            case "ZSET":
+                values = redisDao.getZSET(serverName, dbIndex, key);
+                break;
+            case "HASH":
+                values = redisDao.getHASH(serverName, dbIndex, key);
+                break;
+            case "NONE":
+                //if showType = ShowTypeEnum.hide
+                dataType = getDataType(serverName, dbIndex, key);
+                values = getKV(serverName, dbIndex, key);
+                break;
+        }
+
+        final String dataType1 = dataType;
+        final Object values1 = values;
+        return WorkcenterResult.custom().setOK(WorkcenterCodeEnum.valueOf(WebConstant.OK_REDISKV_UPDATE), new Object() {
+            public String dataType;
+            public Object values;
+
+            {
+                dataType = dataType1;
+                values = values1;
+            }
+        }).build();
+    }
+
+    private String getDataType(String serverName, int dbIndex, String key) {
+        RedisConnection connection = null;
+        try {
+            RedisTemplate redisTemplate = RedisTemplateFactory.getRedisTemplate(serverName);
+            connection = RedisConnectionUtils.getConnection(redisTemplate.getConnectionFactory());
+            connection.select(dbIndex);
+            DataType dataType = connection.type(key.getBytes());
+            return dataType.name().toUpperCase();
+        } finally {
+            connection.close();
+        }
+    }
+
+    private Object getKV(String serverName, int dbIndex, String key) {
+        RedisTemplate<String, Object> redisTemplate = RedisTemplateFactory.getRedisTemplate(serverName);
+        RedisConnection connection = null;
+        try {
+            connection = RedisConnectionUtils.getConnection(redisTemplate.getConnectionFactory());
+            connection.select(dbIndex);
+            DataType dataType = connection.type(key.getBytes());
+            Object values = null;
+            switch (dataType) {
+                case STRING:
+                    values = redisDao.getSTRING(serverName, dbIndex, key);
+                    break;
+                case LIST:
+                    values = redisDao.getLIST(serverName, dbIndex, key);
+                    break;
+                case SET:
+                    values = redisDao.getSET(serverName, dbIndex, key);
+                    break;
+                case ZSET:
+                    values = redisDao.getZSET(serverName, dbIndex, key);
+                    break;
+                case HASH:
+                    values = redisDao.getHASH(serverName, dbIndex, key);
+                    break;
+                case NONE:
+                    //never be here
+                    values = null;
+            }
+            return values;
+        } finally {
+            connection.close();
+        }
+    }
+
+    @Override
+    public void delKV(String serverName, int dbIndex, String deleteKeys) {
+        redisDao.delRedisKeys(serverName, dbIndex, deleteKeys);
+        return;
+    }
+
 }

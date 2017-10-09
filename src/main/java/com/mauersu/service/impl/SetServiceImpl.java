@@ -16,18 +16,12 @@ public class SetServiceImpl implements SetService {
 	
 	@Override
 	public void delSetValue(String serverName, int dbIndex, String key, String value) {
-		RedisTemplate redisTemplate = RedisTemplateFactory.getRedisTemplate(serverName);
-		redisDao.setRedisTemplate(redisTemplate);
 		redisDao.delSetValue(serverName, dbIndex, key, value);
 	}
 
 	@Override
 	public void updateSetValue(String serverName, int dbIndex, String key, String value) {
-		RedisTemplate redisTemplate = RedisTemplateFactory.getRedisTemplate(serverName);
-		redisDao.setRedisTemplate(redisTemplate);
 		redisDao.updateSetValue(serverName, dbIndex, key, value);
 	}
-	
-	
 
 }
